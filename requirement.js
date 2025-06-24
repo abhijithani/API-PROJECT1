@@ -32,3 +32,10 @@
 //to get all the publications
 //to get a sepcific publications
 //to get a list of publications based on a book
+
+
+//POST REQUEST 
+//1.ADD NEW BOOK
+//2.ADD NEW  PUBLICATIONS
+//3.ADD NEW AUTHOR
+ 

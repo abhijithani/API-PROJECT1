@@ -1,4 +1,5 @@
 const express = require("express");
+var bodyParser = require("body-parser");
 
 
 //database
@@ -7,7 +8,8 @@ const database = require("./database");
 //Intializing express
 const booky = express();
 
-
+booky.use(bodyParser.urlencoded({extended:true}));
+booky.use(bodyParser.json());
 
 
 /*
@@ -173,6 +175,7 @@ Access      PUBLIC
 Parameer    NONE
 Method      GET  
 
+
 */
 
 booky.get("/publications/book/:isbn", (req, res) => {
@@ -183,6 +186,72 @@ booky.get("/publications/book/:isbn", (req, res) => {
     }
     return res.json({ publications: getspecificpublications })
 })
+
+//POST
+
+/*
+ROUTE        /book/new
+DESCRIPTION  Add new books
+Access      PUBLIC
+Parameer    NONE
+Method      POST
+*/
+
+booky.post("/book/new", (req,res) =>{
+    const newBook =req.body;
+    database.books.push(newBook);
+    return res.json({updateBooks: database.books});
+});
+
+
+
+
+/*
+ROUTE        /author/new
+DESCRIPTION  Add new author
+Access      PUBLIC
+Parameer    NONE
+Method      POST
+*/
+
+booky.post("/author/new", (req,res) =>{
+    const newAuthor = req.body;
+    database.author.push(newAuthor);
+    return res.json(database.author)
+})
+
+
+/*
+ROUTE        /publications/new
+DESCRIPTION  Add new publications
+Access      PUBLIC
+Parameer    NONE
+Method      POST
+*/
+
+// booky.post("/publications/new", (req,res) => {
+//     const newPublcations = req.body;
+//     database.publications.push(newPublcations);
+//     return res.json(database.publications)
+// })
+
+booky.post("/publications/add", (req,res) => {
+    const addPublications =req.body;
+
+    const checkingExistence = database.publications.filter(
+        (pub) => pub.publications === addPublications)
+
+        if(checkingExistence.length === 0){
+            return res.json({error:"its already in here $"})
+        }
+        else{
+            database.publications.push(addPublications);
+            return res.json(database.publications);
+        }
+})
+
+
+
 
 booky.listen(3000, () => {
     console.log("server is up and runnig");
