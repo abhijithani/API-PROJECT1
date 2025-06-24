@@ -43,3 +43,9 @@
 //--------PUT-----
 
 //UPDATE BOOK DETAILS if AUTHOR is
+
+
+//----DELETE ---
+//1.DELETE A BOOK
+//2.DELETE AUTHOR FORM A BOOK
+//3.DELETE Author from and related book from author
