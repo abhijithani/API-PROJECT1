@@ -31,9 +31,9 @@ const publications = [
         books: ["12345books", "743book"]
     },
     {
-        id: 2,
+        id: 2 ,
         name: "rudeex",
-        books: ["324books"]
+        books: []
     },
     {
         id: 3,

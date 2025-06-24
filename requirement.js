@@ -39,3 +39,7 @@
 //2.ADD NEW  PUBLICATIONS
 //3.ADD NEW AUTHOR
  
+
+//--------PUT-----
+
+//UPDATE BOOK DETAILS if AUTHOR is

@@ -8,7 +8,7 @@ const database = require("./database");
 //Intializing express
 const booky = express();
 
-booky.use(bodyParser.urlencoded({extended:true}));
+booky.use(bodyParser.urlencoded({ extended: true }));
 booky.use(bodyParser.json());
 
 
@@ -197,10 +197,10 @@ Parameer    NONE
 Method      POST
 */
 
-booky.post("/book/new", (req,res) =>{
-    const newBook =req.body;
+booky.post("/book/new", (req, res) => {
+    const newBook = req.body;
     database.books.push(newBook);
-    return res.json({updateBooks: database.books});
+    return res.json({ updateBooks: database.books });
 });
 
 
@@ -214,7 +214,7 @@ Parameer    NONE
 Method      POST
 */
 
-booky.post("/author/new", (req,res) =>{
+booky.post("/author/new", (req, res) => {
     const newAuthor = req.body;
     database.author.push(newAuthor);
     return res.json(database.author)
@@ -235,22 +235,55 @@ Method      POST
 //     return res.json(database.publications)
 // })
 
-booky.post("/publications/add", (req,res) => {
-    const addPublications =req.body;
+booky.post("/publications/add", (req, res) => {
+    const addPublications = req.body;
 
     const checkingExistence = database.publications.filter(
-        (pub) => pub.publications === addPublications)
+        (pub) => pub.id === addPublications.id)
 
-        if(checkingExistence.length === 0){
-            return res.json({error:"its already in here $"})
-        }
-        else{
-            database.publications.push(addPublications);
-            return res.json(database.publications);
-        }
+
+    if (checkingExistence.length > 0) {
+        return res.json({ error: `Publication with ID ${addPublications.id} already exists` });
+    }
+    else {
+        database.publications.push(addPublications);
+        return res.json(database.publications);
+    }
 })
 
+/*
+ROUTE        publications/update/book
+DESCRIPTION  update /add new publications
+Access      PUBLIC
+Parameer    NONE
+Method      POST
+*/
 
+booky.put("/publications/update/book/:isbn", (req,res) => {
+    //ADD NEW NEW BOOK IN PUBLICATION
+    database.publications.forEach((pub) =>{
+        if(pub.id === req.body.pubID){
+            return pub.books.push(req.params.isbn);
+        }
+    });
+
+    //UPDATE PUBLICATIONS IN BOOK
+    database.books.forEach((book) => {
+        if(book.ISBN ===req.params.isbn){
+            book.publications = req.body.pubID;
+            return;
+        }
+    });
+
+    return res.json(
+        {
+            books: database.books,
+            publication: database.publications,
+            message: "succesfully updated"
+        }
+    );
+
+});
 
 
 booky.listen(3000, () => {
